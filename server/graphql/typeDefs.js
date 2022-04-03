@@ -1,8 +1,10 @@
-const { gql } = require('apollo-server');
+const { gql } = require('apollo-server-express');
 
 module.exports = gql`
   type Message {
+    id: ID
     text: String
+    username: String
     createdAt: String
     createdBy: String
   }
@@ -32,13 +34,20 @@ module.exports = gql`
   }
 
   type Query {
+    getAllMessages: [Message]
     message(id: ID!): Message
     user(id: ID!): User
   }
 
   type Mutation {
     createMessage(messageInput: MessageInput): Message!
+    deleteMessage(id: ID): Boolean
+    updateMessage(id: ID, messageInput: MessageInput): Message!
     registerUser(registerInput: RegisterInput): User
     loginUser(loginInput: LoginInput): User
+  }
+
+  type Subscription {
+    messageCreated: Message
   }
 `;
